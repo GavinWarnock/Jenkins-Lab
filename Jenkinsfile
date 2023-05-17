@@ -21,4 +21,5 @@ pipeline {
         sh 'echo "Deploying application to EC2 instance..."'
       }
     }
+  }
 }
