@@ -4,6 +4,10 @@ pipeline {
     stage('Test') {
       steps {
         sh 'echo "Running tests..."'
+        script {
+          def nodejsTool = tool name: 'node-20-tool', type: ' jenkins.plugins.nodejs.tools.NodeJSInstallation'
+          env.Path = "${nodejstool}/bin:${env.PATH}"
+        }
       }
     }
     stage('Build') {
@@ -14,6 +18,14 @@ pipeline {
     stage('Docker') {
       steps {
         sh 'echo "Building image and pushing to Docker Hub..."'
+        script {
+          def dockerTool = tool name: 'docker-latest-tool', type: 'otg.jenkinsci.plugins.docker.commons.tools.DockerTool'
+          env.PATH = "${dockerTool}/bin:${env.PATH}"
+        }
+        withCredentials([usernamePassword(credentialsId: 'personal-docker-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DCOKER_PASSWORD')]) {
+          sh "echo ${DOCKER_USERNAME}"
+        }
+        sh "docker --version"
       }
     }
     stage('Deploy') {
