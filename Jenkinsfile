@@ -6,7 +6,7 @@ pipeline {
         sh 'echo "Running tests..."'
         script {
           def nodejsTool = tool name: 'node-20-tool', type: ' jenkins.plugins.nodejs.tools.NodeJSInstallation'
-          env.Path = "${nodejstool}/bin:${env.PATH}"
+          env.PATH = "${nodejstool}/bin:${env.PATH}"
         }
         sh "node --version"
       }
